@@ -1,0 +1,509 @@
+<launch>
+  <arg name="mav_name1" default="hummingbird"/>
+  <arg name="mav_name2" default="hummingbird"/>
+  <arg name="mav_name3" default="hummingbird"/>
+  <arg name="mav_name4" default="hummingbird"/>
+  <arg name="mav_name5" default="hummingbird"/>
+  <arg name="mav_name6" default="hummingbird"/>
+  <arg name="mav_name7" default="hummingbird"/>
+  <arg name="mav_name8" default="hummingbird"/>
+  <arg name="mav_name9" default="hummingbird"/>
+  <arg name="mav_name10" default="hummingbird"/>
+  <arg name="mav_name11" default="hummingbird"/>
+  <arg name="mav_name12" default="hummingbird"/>
+  <arg name="mav_name13" default="hummingbird"/>
+  <arg name="mav_name14" default="hummingbird"/>
+  <arg name="mav_name15" default="hummingbird"/>
+  <arg name="mav_name16" default="hummingbird"/>
+  <arg name="mav_name17" default="hummingbird"/>
+  <arg name="mav_name18" default="hummingbird"/>
+  <arg name="mav_name19" default="hummingbird"/>
+  <arg name="mav_name20" default="hummingbird"/>
+  <arg name="mav_name21" default="hummingbird"/>
+  <arg name="world_name" default="basic"/>
+  <arg name="enable_logging" default="false" />
+  <arg name="enable_ground_truth" default="true" />
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <!-- The following line causes gzmsg and gzerr messages to be printed to the console
+      (even when Gazebo is started through roslaunch) -->
+  <arg name="verbose" default="false"/>
+
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find rotors_gazebo)/worlds/$(arg world_name).world" />
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="verbose" value="$(arg verbose)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+  </include>
+
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone1">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone1"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="0"/>
+      <arg name="y" default="0"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone2">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone2"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-2"/>
+      <arg name="y" default="-2"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+ 
+  <!-- SPAWN A UAV -->
+  <group ns="drone3">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone3"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="2"/>
+      <arg name="y" default="-2"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+   <!-- SPAWN A UAV -->
+   <group ns="drone4">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone4"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-2"/>
+      <arg name="y" default="2"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone5">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone5"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="2"/>
+      <arg name="y" default="2"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone6">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone6"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-4"/>
+      <arg name="y" default="-4"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+ 
+  <!-- SPAWN A UAV -->
+  <group ns="drone7">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone7"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="4"/>
+      <arg name="y" default="-4"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+   <!-- SPAWN A UAV -->
+   <group ns="drone8">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone8"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-4"/>
+      <arg name="y" default="4"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone9">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone9"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="4"/>
+      <arg name="y" default="4"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone10">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone10"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-6"/>
+      <arg name="y" default="-6"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+ 
+  <!-- SPAWN A UAV -->
+  <group ns="drone11">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone11"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="6"/>
+      <arg name="y" default="-6"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+   <!-- SPAWN A UAV -->
+   <group ns="drone12">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone12"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-6"/>
+      <arg name="y" default="6"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone13">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone13"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="6"/>
+      <arg name="y" default="6"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone14">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone14"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-8"/>
+      <arg name="y" default="-8"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+ 
+  <!-- SPAWN A UAV -->
+  <group ns="drone15">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone15"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="8"/>
+      <arg name="y" default="-8"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+   <!-- SPAWN A UAV -->
+   <group ns="drone16">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone16"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-8"/>
+      <arg name="y" default="8"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone17">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone17"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="8"/>
+      <arg name="y" default="8"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone18">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone18"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-10"/>
+      <arg name="y" default="-10"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+ 
+  <!-- SPAWN A UAV -->
+  <group ns="drone19">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone19"/>
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="10"/>
+      <arg name="y" default="-10"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+   <!-- SPAWN A UAV -->
+   <group ns="drone20">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone20"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="-10"/>
+      <arg name="y" default="10"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+  <!-- SPAWN A UAV -->
+  <group ns="drone21">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="namespace" value="drone21"/>
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="mav_name" value="hummingbird"/>
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="x" default="10"/>
+      <arg name="y" default="10"/>
+      <arg name="z" default="0.1"/>
+    </include> 
+    <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_hummingbird.yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/hummingbird.yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  </group>
+
+</launch>

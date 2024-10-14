@@ -375,8 +375,11 @@ void GazeboRosInterfacePlugin::GzConnectRosToGazeboTopicMsgCallback(
 void GazeboRosInterfacePlugin::ConvertHeaderGzToRos(
     const gz_std_msgs::Header& gz_header,
     std_msgs::Header_<std::allocator<void> >* ros_header) {
-  ros_header->stamp.sec = gz_header.stamp().sec();
-  ros_header->stamp.nsec = gz_header.stamp().nsec();
+  // ros_header->stamp.sec = gz_header.stamp().sec();
+  // ros_header->stamp.nsec = gz_header.stamp().nsec();
+  ros::Time now = ros::Time::now();
+  ros_header->stamp.sec = now.sec;
+  ros_header->stamp.nsec = now.nsec;
   ros_header->frame_id = gz_header.frame_id();
 }
 

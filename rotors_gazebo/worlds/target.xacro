@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="dart_board">
+    <link name="dart_board_link">
+      <collision name="dart_board_collision">
+        <geometry>
+          <cylinder length="0.05" radius="0.3"/>
+          <cylinder length="0.01" radius="0.25"/>
+          <cylinder length="0.01" radius="0.15"/>
+          <cylinder length="0.02" radius="0.1"/>
+        </geometry>
+      </collision>
+      <visual name="dart_board_visual">
+        <geometry>
+          <cylinder length="0.05" radius="0.3"/>
+          <cylinder length="0.01" radius="0.25"/>
+          <cylinder length="0.01" radius="0.15"/>
+          <cylinder length="0.02" radius="0.1"/>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>DartBoard/Blue</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="dart_board_red_ring_visual">
+        <geometry>
+          <cylinder length="0.01" radius="0.25"/>
+          <cylinder length="0.01" radius="0.15"/>
+          <cylinder length="0.02" radius="0.1"/>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>DartBoard/Red</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="dart_board_green_ring_visual">
+        <geometry>
+          <cylinder length="0.01" radius="0.15"/>
+          <cylinder length="0.02" radius="0.1"/>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>DartBoard/Green</name>
+          </script>
+        </material>
+      </visual>
+      <visual name="dart_board_brown_ring_visual">
+        <geometry>
+          <cylinder length="0.02" radius="0.1"/>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>DartBoard/Brown</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
